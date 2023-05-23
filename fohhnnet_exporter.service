@@ -1,0 +1,11 @@
+[Unit]
+Description=Fohhn-Net Exporter for Prometheus
+After=network.target
+
+[Service]
+Type=simple
+User=prometheus
+ExecStart=/usr/local/bin/fohhnnet_exporter --web.listen-address=:2121 --log.level=Debug
+
+[Install]
+WantedBy=multi-user.target
