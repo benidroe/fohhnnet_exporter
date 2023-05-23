@@ -32,7 +32,7 @@ func RenderFohhnDevice(fds *fohhnDeviceStateSet) {
 	fmt.Printf("Device Model:       \t %s\n", GetModelNameByNumber(fds.Device))
 	fmt.Printf("Device Version:  \t %s\n", fds.Version)
 	fmt.Printf("Device Standby:  \t %s\n", stby)
-	fmt.Printf("Temperature:    \t %.1f °C\n", fds.Temperature)
+	fmt.Printf("Temperature:    \t %.1f °C\n", fds.Temperature/10)
 	fmt.Printf("Operation Time:    \t %d:%dh\n", fds.OperatingTimeHours, fds.OperatingTimeMinutes)
 	fmt.Println("===========================================================")
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
