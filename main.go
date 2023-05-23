@@ -21,14 +21,14 @@ var (
 	netDuration = prometheus.NewSummaryVec(
 		prometheus.SummaryOpts{
 			Name: "fohhnnet_collection_duration_seconds",
-			Help: "Duration of collections by the FohhnNet exporter",
+			Help: "Duration of collections by the Fohhn-Net exporter",
 		},
 		[]string{"module"},
 	)
 	netRequestErrors = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Name: "fohhnnet_request_errors_total",
-			Help: "Errors in requests to the fohhnnet exporter",
+			Help: "Errors in requests to the Fohhn-Net exporter",
 		},
 	)
 

@@ -32,7 +32,7 @@ func (c collector) Collect(ch chan<- prometheus.Metric) {
 	walkFohhnNet(c.target, &pjSlice, c.logger)
 
 	ch <- prometheus.MustNewConstMetric(
-		prometheus.NewDesc("fohhnnet_walk_duration_seconds", "Time FohhnNet walk took.", nil, nil),
+		prometheus.NewDesc("fohhnnet_walk_duration_seconds", "Time Fohhn-Net walk took.", nil, nil),
 		prometheus.GaugeValue,
 		time.Since(start).Seconds())
 
@@ -42,7 +42,7 @@ func (c collector) Collect(ch chan<- prometheus.Metric) {
 	}
 
 	ch <- prometheus.MustNewConstMetric(
-		prometheus.NewDesc("fohhnnet_scrape_duration_seconds", "Total FohhnNet time scrape took (walk and processing).", nil, nil),
+		prometheus.NewDesc("fohhnnet_scrape_duration_seconds", "Total Fohhn-Net time scrape took (walk and processing).", nil, nil),
 		prometheus.GaugeValue,
 		time.Since(start).Seconds())
 }
@@ -73,13 +73,13 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 
 					// Append Metric to result set pjSlice
 					*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-						prometheus.NewDesc("fohhnnet_up", "fohhnNet device is up", []string{"id", "model", "version"}, nil),
+						prometheus.NewDesc("fohhnnet_up", "Fohhn-Net device is up", []string{"id", "model", "version"}, nil),
 						prometheus.GaugeValue,
 						float64(1), strconv.Itoa(int(id)), FohhnNet.GetModelNameByNumber(walkResult.Device), walkResult.Version))
 
 					// Append Metric to result set pjSlice
 					*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-						prometheus.NewDesc("fohhnnet_temperature", "fohhnNet device temperature", []string{"id"}, nil),
+						prometheus.NewDesc("fohhnnet_temperature", "Fohhn-Net device temperature", []string{"id"}, nil),
 						prometheus.GaugeValue,
 						float64(int(walkResult.Temperature*10)), strconv.Itoa(int(id))))
 
@@ -91,7 +91,7 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 							}
 							// Append Metric to result set pjSlice
 							*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-								prometheus.NewDesc("fohhnnet_protect", "fohhnNet device channel protection", []string{"id", "channel", "name", "preset"}, nil),
+								prometheus.NewDesc("fohhnnet_protect", "Fohhn-Net device channel protection", []string{"id", "channel", "name", "preset"}, nil),
 								prometheus.GaugeValue,
 								float64(protect), strconv.Itoa(int(id)), strconv.Itoa(int(k+1)), strings.TrimSpace(walkResult.OutputChannelName[k]), strings.TrimSpace(walkResult.SpeakerPreset[k])))
 						}
@@ -99,7 +99,7 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 
 					// Append Metric to result set pjSlice
 					*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-						prometheus.NewDesc("fohhnnet_operatinghours", "fohhnNet device operating time in hours", []string{"id"}, nil),
+						prometheus.NewDesc("fohhnnet_operatinghours", "Fohhn-Net device operating time in hours", []string{"id"}, nil),
 						prometheus.GaugeValue,
 						float64(int(walkResult.OperatingTimeHours)), strconv.Itoa(int(id))))
 
@@ -109,7 +109,7 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 					}
 					// Append Metric to result set pjSlice
 					*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-						prometheus.NewDesc("fohhnnet_power", "fohhnNet device standby power", []string{"id"}, nil),
+						prometheus.NewDesc("fohhnnet_power", "Fohhn-Net device standby power", []string{"id"}, nil),
 						prometheus.GaugeValue,
 						float64(power), strconv.Itoa(int(id))))
 
@@ -122,7 +122,7 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 
 	// Append Metric to result set pjSlice
 	*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
-		prometheus.NewDesc("fohhnnet_adapter_up", "fohhnNet adapter is up", nil, nil),
+		prometheus.NewDesc("fohhnnet_adapter_up", "Fohhn-Net adapter is up", nil, nil),
 		prometheus.GaugeValue,
 		float64(isUp)))
 
