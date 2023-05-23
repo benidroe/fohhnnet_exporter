@@ -82,6 +82,13 @@ func ScrapeFohhnDevice(fohhnNetSession *fohhnNetSession, id int8) (*fohhnDeviceS
 
 	if fohhnNetSession.IsConnected {
 
+		// Flush the line
+		_, _, err := GetDeviceInfo(fohhnNetSession, id)
+		if err != nil {
+			hasAnswered = false
+			return nil, errors.New("Gerät hat nicht geantwortet")
+		}
+
 		protect1, protect2, protect3, protect4, temperature, err := GetControls(fohhnNetSession, id)
 
 		if err == nil {
