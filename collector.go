@@ -81,7 +81,7 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 					*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
 						prometheus.NewDesc("fohhnnet_temperature", "Fohhn-Net device temperature", []string{"id"}, nil),
 						prometheus.GaugeValue,
-						float64(int(walkResult.Temperature*10)), strconv.Itoa(int(id))))
+						float64(int(walkResult.Temperature)), strconv.Itoa(int(id))))
 
 					if len(walkResult.Protect) == len(walkResult.OutputChannelName) && len(walkResult.Protect) == len(walkResult.SpeakerPreset) {
 						for k, v := range walkResult.Protect {
