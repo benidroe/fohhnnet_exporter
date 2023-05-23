@@ -9,7 +9,7 @@ Implementation of Fohhn-Net UDP and Fohhn Text Protocol will be done later.
 
 Default telnet-listening port is 4001.
 
-####Adapter Pinout:
+### Adapter Pinout:
 
 ```
 
@@ -32,7 +32,7 @@ Shield   |                       |     |  2          |
 
 
 
-####Moxa Nport 5130 configuration
+### Moxa Nport 5130 configuration
 ```
    ## serial settings Port 1
    BAUDRATE     19200
@@ -73,27 +73,20 @@ Visit http://localhost:2121/fohhnnet?target=terminalserver.localnetwork where te
 Clone this repository from github to your go directory. Within this repository run:
 
 ```
+make configure
 make build
+sudo make install
 ```
 
-Copy build to your /usr/local/bin
+Make install copies the two binares to your /usr/local/bin.
+
+Setup exporter as systemd service
 
 ```
-cp fohhnnet_exporter /usr/local/bin
-```
+sudo install -u root fohnnet_exporter.service /usr/lib/systemd/system
 
-
-Change permissions
-```
-chown prometheus:prometheus /usr/local/bin/fohhnnet_exporter
-```
-
-Setup exporter as daemon
-
-```
-Todo with systemctl script...
-vim /etc/default/legaetx_exporter
-START=yes
+sudo systemctl enable fohhnnet_exporter.service
+sudo systemctl start fohhnnet_exporter.service
 
 ```
 
