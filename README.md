@@ -83,7 +83,7 @@ Make install copies the two binares to your /usr/local/bin.
 Setup exporter as systemd service
 
 ```
-sudo install -u root fohnnet_exporter.service /usr/lib/systemd/system
+sudo install -o root -g root fohhnnet_exporter.service /usr/lib/systemd/system
 
 sudo systemctl enable fohhnnet_exporter.service
 sudo systemctl start fohhnnet_exporter.service
