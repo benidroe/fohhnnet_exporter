@@ -82,13 +82,6 @@ func ScrapeFohhnDevice(fohhnNetSession *fohhnNetSession, id int8) (*fohhnDeviceS
 
 	if fohhnNetSession.IsConnected {
 
-		// Flush the line
-		_, _, err := GetDeviceInfo(fohhnNetSession, id)
-		if err != nil {
-			hasAnswered = false
-			return nil, errors.New("Gerät hat nicht geantwortet")
-		}
-
 		protect1, protect2, protect3, protect4, temperature, err := GetControls(fohhnNetSession, id)
 
 		if err == nil {
@@ -187,29 +180,39 @@ func ScanFohhnNet(fohhnNetSession *fohhnNetSession, idMin int8, idMax int8) []in
 
 func GetControls(fohhnNetSession *fohhnNetSession, deviceId int8) (bool, bool, bool, bool, float32, error) {
 
-	sendMessage(fohhnNetSession, deviceId, "\x07", "\x00", "\x00", "\x00")
-	msg, err := receiveStateDelimited(fohhnNetSession)
+	// because of byte loss, we need sometimes a second try.
+	for i := 0; i < 2; i++ {
 
-	if err != nil {
-		fmt.Println("Error", err)
-	} else {
+		sendMessage(fohhnNetSession, deviceId, "\x07", "\x00", "\x00", "\x00")
+		msg, err := receiveStateDelimited(fohhnNetSession)
 
-		if len(msg) > 2 {
+		if err != nil {
+			fmt.Println("Error", err)
+		} else {
 
-			// Temperature als unsigned word einlesen
-			numBytes := []byte{msg[1], msg[2]}
-			u := binary.BigEndian.Uint16(numBytes)
+			// retry, if message length does not match 6 bytes.
+			if len(msg) != 6 {
+				time.Sleep(350 * time.Millisecond)
+				continue
+			}
 
-			// Und die eingelesene Bitfolge als signed word behandeln und durch 10 teilen
-			temperature := float32(int16(u)) / 10.0
+			if len(msg) > 2 {
 
-			// Bit 0,1,2,3 steht jeweils für den Protect des Kanals. Diesen mit einem Bitshift und AND ermitteln
-			protect1 := msg[0]&(1<<0) == 0
-			protect2 := msg[0]&(1<<1) == 0
-			protect3 := msg[0]&(1<<2) == 0
-			protect4 := msg[0]&(1<<3) == 0
+				// Temperature als unsigned word einlesen
+				numBytes := []byte{msg[1], msg[2]}
+				u := binary.BigEndian.Uint16(numBytes)
 
-			return protect1, protect2, protect3, protect4, temperature, nil
+				// Und die eingelesene Bitfolge als signed word behandeln und durch 10 teilen
+				temperature := float32(int16(u)) / 10.0
+
+				// Bit 0,1,2,3 steht jeweils für den Protect des Kanals. Diesen mit einem Bitshift und AND ermitteln
+				protect1 := msg[0]&(1<<0) == 0
+				protect2 := msg[0]&(1<<1) == 0
+				protect3 := msg[0]&(1<<2) == 0
+				protect4 := msg[0]&(1<<3) == 0
+
+				return protect1, protect2, protect3, protect4, temperature, nil
+			}
 		}
 	}
 
