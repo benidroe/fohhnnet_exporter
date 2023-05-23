@@ -1,5 +1,5 @@
 config:
-        go get github.com/go-kit/kit/log
+		go get github.com/go-kit/kit/log
 		go get github.com/go-kit/kit/log/level
 		go get github.com/prometheus/common/version
 		go get github.com/prometheus/client_golang/prometheus
