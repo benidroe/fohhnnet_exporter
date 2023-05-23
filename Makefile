@@ -7,13 +7,14 @@ config:
 		go get github.com/alecthomas/kingpin/v2
 
 build:
-		go build fohhnnet_exporter
-		go build fohhnnet_exporter/fohhn-cli
+		go build -o bin fohhnnet_exporter
+		go build -o bin fohhnnet_exporter/fohhn-cli
 
 
 run:
 		go run main.go
 
 install:
-		install -o prometheus -g prometheus fohhnnet_exporter /usr/local/bin
-		install -o prometheus -g prometheus fohhn-cli /usr/local/bin
+		install -o prometheus -g prometheus bin/fohhnnet_exporter /usr/local/bin
+		install -o prometheus -g prometheus bin/fohhn-cli /usr/local/bin/fohhn-cli
+
