@@ -73,11 +73,31 @@ Fohhn-Net                              D-Sub female
 
 ## Usage
 
-```sh
-./fohhnnet_exporter
+### fohhnnet_exporter
+
+```
+Flags:                                                                       
+  -h, --help           Show context-sensitive help (also try --help-long
+                            and --help-man).                                 
+      --web.listen-address=":2121"                                           
+                            Address to listen on for web interface and       
+                            telemetry.                                       
+      --log.level="Debug"   LogLevel - Debug, Info, Warn, Error              
+      --fnet.port.udp=2101  UDP Port for target devices                      
+      --fnet.port.tcp=4001  TCP Port for target devices     
 ```
 
+#### Example
+```sh
+./fohhnnet_exporter
+
+./fohhnnet_exporter --fnet.port.udp 4021 --log.level Info
+```
 Visit http://localhost:2121/fohhnnet?target=terminalserver.localnetwork where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
+
+
+
+
 
 ### fohhn-cli
 
@@ -97,7 +117,6 @@ Flags:
 Args:                                                                        
   <host>  Host or IP of target device                                        
 
-fohhn-cli --scan --all
 
 ``` 
 
