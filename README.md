@@ -93,7 +93,7 @@ Flags:
 
 ./fohhnnet_exporter --fnet.port.udp 4021 --log.level Info
 ```
-Visit http://localhost:2121/fohhnnet?target=terminalserver.localnetwork where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
+Visit http://localhost:2121/fohhnnetudp?target=terminalserver.localnetwork where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
 
 
 
