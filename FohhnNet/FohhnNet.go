@@ -49,11 +49,11 @@ type fohhnDeviceStateSet struct {
 	OutputChannelName    []string
 }
 
-func NewFohhnNetTcpSession(host string, port int) (*fohhnNetSession, error) {
+func NewFohhnNetSession(host string, port int, network string) (*fohhnNetSession, error) {
 
 	f := fohhnNetSession{}
 	f.fohhnDialer = net.Dialer{Timeout: 1 * time.Second}
-	conn, err := f.fohhnDialer.Dial("tcp", host+":"+strconv.Itoa(port))
+	conn, err := f.fohhnDialer.Dial(network, host+":"+strconv.Itoa(port))
 	if err != nil {
 		fmt.Println("Error while connecting")
 		return nil, errors.New("Konnte keine Verbindung zu FohhnNet Node aufbauen")
