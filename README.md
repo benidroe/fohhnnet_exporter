@@ -11,7 +11,7 @@ Each RS-485 based Fohhn-Net need an external ethernet adapter. The following ada
 * Fohhn NA-4 via UDP (not tested yet)
 * Moxa 5130 RS-485 to Ethernet device server via TCP
 
-Some devices with integrated network interface can communicate directly via UDP. However, other devices only use their interface for audio and can not be used for queries.
+Some devices with integrated network interface can communicate directly via UDP. However, a few devices only use their interface for audio and can not be used for queries.
 
 Fohhn Text Protocol is not implemented yet.
 
