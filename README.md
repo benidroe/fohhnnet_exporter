@@ -2,10 +2,11 @@
 
 This Fohhn-Net exporter is a possibility to provide data in a format, that Prometheus can ingest.  
 
-This independent implementation does not belong to the manufacturer.
+Important: The implementation is independent and does not belong to the manufacturer.
 
-This exporter uses the Fohhn-Net RS-485 protocol.
-Devices with Fohhn-Net RS-485 require an external ethernet adapter. The following adapters may work:
+### Requirements
+Currently only Fohhn-Net RS-485 protocol is supported.
+Each RS-485 based Fohhn-Net need an external ethernet adapter. The following adapters may work:
 
 * Fohhn NA-4 via UDP (not tested yet)
 * Moxa 5130 RS-485 to Ethernet device server via TCP
