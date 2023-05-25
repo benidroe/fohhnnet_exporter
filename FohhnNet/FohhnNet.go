@@ -359,7 +359,8 @@ func sendMessage(fohhnNetSession *fohhnNetSession, deviceId int8, commandByte st
 	fmt.Fprintf(fohhnNetSession.connection, message)                                                                // send request to device
 }
 
-/**
+/*
+*
 Diese Go Routine empfängt Strings von der FohhnNetSession und schreibt diese auf den responseChanel.
 Gestartet wird sie im Constructor gleich nach Aufbau der Verbindung.
 */
@@ -402,7 +403,7 @@ func receiveStateDelimited(fohhnNetSession *fohhnNetSession) (string, error) {
 
 		pattern, _ := regexp.Compile(`.*f0`)             // Das Pattern muss mit dem SB \xF0 enden
 		if pattern.MatchString(fmt.Sprintf("%x", msg)) { // Weil MatchString mit 4-Byte Unicode arbeitet, muss Hex als Hex-String Formatiert werden und kann erst dann gematched werden.
-			return msg, nil
+			return decodeString(msg), nil // \xFF\x00 entspricht dem Wert \xF0, aber nicht dem StartByte
 		}
 		fohhnNetSession.hasFailed = true
 		return "", errors.New("Error: Response does not match SB")
