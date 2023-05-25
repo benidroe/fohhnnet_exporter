@@ -16,6 +16,8 @@ import (
 var (
 	listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":2121").String()
 	logLevel      = kingpin.Flag("log.level", "LogLevel - Debug, Info, Warn, Error").Default("Debug").String()
+	fPortUdp      = kingpin.Flag("fnet.port.udp", "UDP Port for target devices").Default("2101").Int()
+	fPortTcp      = kingpin.Flag("fnet.port.tcp", "TCP Port for target devices").Default("4001").Int()
 
 	// Metrics about the exporter itself.
 	netDuration = prometheus.NewSummaryVec(
@@ -41,7 +43,7 @@ func init() {
 	prometheus.MustRegister(version.NewCollector("fohhnnet_exporter"))
 }
 
-func handler(w http.ResponseWriter, r *http.Request, logger log.Logger) {
+func handler(w http.ResponseWriter, r *http.Request, port int, protocol string, logger log.Logger) {
 	query := r.URL.Query()
 
 	target := query.Get("target")
@@ -56,7 +58,7 @@ func handler(w http.ResponseWriter, r *http.Request, logger log.Logger) {
 
 	start := time.Now()
 	registry := prometheus.NewRegistry()
-	collector := collector{ctx: r.Context(), target: target, logger: logger}
+	collector := collector{ctx: r.Context(), target: target, port: port, protocol: protocol, logger: logger}
 	registry.MustRegister(collector)
 	// Delegate http serving to Prometheus client library, which will call collector.Collect.
 	h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
@@ -93,8 +95,12 @@ func main() {
 
 	http.Handle("/metrics", promhttp.Handler())
 
-	http.HandleFunc("/fohhnnet", func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r, logger)
+	http.HandleFunc("/fohhnnettcp", func(w http.ResponseWriter, r *http.Request) {
+		handler(w, r, *fPortTcp, "tcp", logger)
+	})
+
+	http.HandleFunc("/fohhnnetudp", func(w http.ResponseWriter, r *http.Request) {
+		handler(w, r, *fPortUdp, "udp", logger)
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +123,7 @@ func main() {
             <body>
             <h1>Fohhn-Net Exporter</h1>
 			<h2>query device</h2>
-            <form action="/fohhnnet">
+            <form action="/fohhnnettcp">
             <label>Target:</label> <input type="text" name="target" placeholder="X.X.X.X" value="1.2.3.4"><br>
             <input type="submit" value="Query">
             </form>

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"fohhnnet_exporter/FohhnNet"
 	"github.com/go-kit/kit/log"
 	"strconv"
@@ -12,8 +13,10 @@ import (
 )
 
 type collector struct {
-	ctx    context.Context
-	target string
+	ctx      context.Context
+	target   string
+	port     int
+	protocol string
 	//module *config.Module
 	logger log.Logger
 }
@@ -29,7 +32,7 @@ func (c collector) Collect(ch chan<- prometheus.Metric) {
 
 	var pjSlice []prometheus.Metric // place to push collected metrics
 
-	walkFohhnNet(c.target, &pjSlice, c.logger)
+	walkFohhnNet(c.target, c.port, c.protocol, &pjSlice, c.logger)
 
 	ch <- prometheus.MustNewConstMetric(
 		prometheus.NewDesc("fohhnnet_walk_duration_seconds", "Time Fohhn-Net walk took.", nil, nil),
@@ -47,9 +50,9 @@ func (c collector) Collect(ch chan<- prometheus.Metric) {
 		time.Since(start).Seconds())
 }
 
-func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) {
+func walkFohhnNet(dest string, port int, protocol string, pjSlice *[]prometheus.Metric, logger log.Logger) {
 
-	fohhnNetSession, err := FohhnNet.NewFohhnNetTcpSession(dest, 4001)
+	fohhnNetSession, err := FohhnNet.NewFohhnNetSession(dest, port, protocol)
 	hasAnswered := false
 	_ = hasAnswered
 
@@ -83,10 +86,12 @@ func walkFohhnNet(dest string, pjSlice *[]prometheus.Metric, logger log.Logger) 
 						prometheus.GaugeValue,
 						float64(int(walkResult.Temperature)), strconv.Itoa(int(id))))
 
-					if len(walkResult.Protect) == len(walkResult.OutputChannelName) && len(walkResult.Protect) == len(walkResult.SpeakerPreset) {
-						for k, v := range walkResult.Protect {
+					fmt.Println("ABC", len(walkResult.Protect), len(walkResult.OutputChannelName), len(walkResult.SpeakerPreset))
+
+					if len(walkResult.Protect) >= walkResult.NumOfChannels && len(walkResult.OutputChannelName) >= walkResult.NumOfChannels && len(walkResult.SpeakerPreset) >= walkResult.NumOfChannels {
+						for k, _ := range walkResult.OutputChannelName {
 							protect := 1
-							if !v {
+							if walkResult.Protect[k] {
 								protect = 0
 							}
 							// Append Metric to result set pjSlice

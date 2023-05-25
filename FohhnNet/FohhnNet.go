@@ -39,6 +39,7 @@ type fohhnDeviceStateSet struct {
 	Id                   int8
 	Version              string
 	Device               string
+	NumOfChannels        int
 	Alias                string
 	OperatingTimeHours   uint32
 	OperatingTimeMinutes uint8
@@ -127,6 +128,7 @@ func ScrapeFohhnDevice(fohhnNetSession *fohhnNetSession, id int8) (*fohhnDeviceS
 		}
 
 		numOfChannels := GetNumOfModelChannels(fds.Device)
+		fds.NumOfChannels = int(numOfChannels)
 
 		for i := int8(1); i <= numOfChannels; i++ {
 			speakerPresetName, err := GetCurrentSpeakerPresetName(fohhnNetSession, id, i)
