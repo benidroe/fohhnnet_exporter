@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"fohhnnet_exporter/FohhnNet"
 	"github.com/go-kit/kit/log"
 	"strconv"
@@ -86,13 +85,11 @@ func walkFohhnNet(dest string, port int, protocol string, pjSlice *[]prometheus.
 						prometheus.GaugeValue,
 						float64(int(walkResult.Temperature)), strconv.Itoa(int(id))))
 
-					fmt.Println("ABC", len(walkResult.Protect), len(walkResult.OutputChannelName), len(walkResult.SpeakerPreset))
-
 					if len(walkResult.Protect) >= walkResult.NumOfChannels && len(walkResult.OutputChannelName) >= walkResult.NumOfChannels && len(walkResult.SpeakerPreset) >= walkResult.NumOfChannels {
 						for k, _ := range walkResult.OutputChannelName {
-							protect := 1
+							protect := 0
 							if walkResult.Protect[k] {
-								protect = 0
+								protect = 1
 							}
 							// Append Metric to result set pjSlice
 							*pjSlice = append(*pjSlice, prometheus.MustNewConstMetric(
