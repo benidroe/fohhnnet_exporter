@@ -2,30 +2,41 @@
 
 Fohhn-Net Exporter for Prometheus.
 
-This exporter uses the Fohhn-Net RS-485 Protocol.
-Each Fohhn-Net network requires one RS-485 to TCP device server, running in 2 wire mode. Like the Moxa 5130.
+This exporter uses the Fohhn-Net RS-485 protocol.
+Devices with Fohhn-Net RS-485 require an external ethernet adapter. The following adapters are supported:
 
-Implementation of Fohhn-Net UDP and Fohhn Text Protocol will be done later.
+* Fohhn NA-4 via UDP (not tested yet)
+* Moxa 5130 RS-485 to Ethernet device server via TCP
 
-Default telnet-listening port is 4001.
+Some devices with integrated network interface can communicate directly via UDP. However, other devices only use their interface for audio.
 
-### Adapter Pinout:
+Fohhn Text Protocol is not implemented yet.
+
+Default Ports:
+```
+UDP  |   2101
+TCP  |   4001
+```
+
+## Moxa 5130 Setup
+
+### Adapter Pinout for Moxa 5130 device server
 
 ```
 
-RJ45                                   D-Sub female  
+Fohhn-Net                              D-Sub female  
 
-=========                              |====== 
-        1|                             |       ======
-         |                       ------|-+5          |
-==       |                       |     |        9    | 
-  |     4|+------ ( COLD - ) ----|-----|-+4          |
-  |      |                       |     |        8    |
-==      6|+-------( HOT +  ) ----|-----|-+3          |
-         |                       |     |        7    |
-Shield   |                       |     |  2          |
-=========                        |     |        6    |
-+------------------( GND   ) -----     |  1          |
+ ========                              |====== 
+ |       |                             |       ======
+(  - o   |-------                ------|-+5          |
+ |       |      |                |     |        9    | 
+(  G o   |----  -- ( COLD - ) ---|-----|-+4          |
+ |       |   |                   |     |        8    |
+(  + o   |+--|---- ( HOT +  ) ---|-----|-+3          |
+ |       |   |                   |     |        7    |
+ =========   ---------------------     |  2          |
+                                       |        6    |
+                                       |  1          |
                                        |       ====== 
                                        | =======
 ```
@@ -67,6 +78,34 @@ Shield   |                       |     |  2          |
 ```
 
 Visit http://localhost:2121/fohhnnet?target=terminalserver.localnetwork where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
+
+### fohhn-cli
+
+There is a simple fohhn-cli. It can be used to check, if a device is responding correctly. 
+
+#### Usage
+```
+Flags:                                                                       
+      --help           Show context-sensitive help (also try --help-long and
+                        --help-man).                                                                   
+      --id              Query device with id                              
+      --scan            Scan for devices                                     
+      --all             Show data from all scanned devices                        
+      --port            Port of target device                                
+  -p, --protocol        Use tcp or udp                                       
+                                                                             
+Args:                                                                        
+  <host>  Host or IP of target device                                        
+
+fohhn-cli --scan --all
+
+``` 
+
+#### Examples
+```
+fohhn-cli --scan --all 10.0.0.2
+fohhn-cli --id 5 --port 4028 --protocol tcp 10.0.0.2
+```
 
 ## Installation
 
