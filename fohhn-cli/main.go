@@ -7,10 +7,9 @@ import (
 )
 
 var (
-	debugOn   = kingpin.Flag("debug", "Get debug informations").Bool()
-	id        = kingpin.Flag("id", "Get debug informations").Int8()
+	id        = kingpin.Flag("id", "Query device with id").Int8()
 	scan      = kingpin.Flag("scan", "Scan for devices").Bool()
-	all       = kingpin.Flag("all", "Show data from all devices").Bool()
+	all       = kingpin.Flag("all", "Show data from all scanned devices").Bool()
 	host      = kingpin.Arg("host", "Host or IP of target device").Required().String()
 	port      = kingpin.Flag("port", "Port of target device").Default("2101").Int()
 	connProto = kingpin.Flag("protocol", "Use tcp or udp").Short('p').Default("udp").String()
