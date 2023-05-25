@@ -11,5 +11,5 @@ func boolToOk(ok bool) string {
 
 func decodeString(inputstr string) string {
 
-	return strings.Replace(inputstr, "\xFF\xF0", "\xF0", -1)
+	return strings.Replace(inputstr, "\xFF\x00", "\xF0", -1)
 }
