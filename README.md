@@ -20,7 +20,7 @@ TCP  |   4001
 
 ## Moxa 5130 Setup
 
-### Adapter Pinout for Moxa 5130 device server
+#### Adapter Pinout for Moxa 5130 device server
 
 ```
 
@@ -28,11 +28,11 @@ Fohhn-Net                              D-Sub female
 
  ========                              |====== 
  |       |                             |       ======
-(  - o   |-------                ------|-+5          |
+-  - o   |-------                ------|-+5          |
  |       |      |                |     |        9    | 
-(  G o   |----  -- ( COLD - ) ---|-----|-+4          |
+-  G o   |----  -- ( COLD - ) ---|-----|-+4          |
  |       |   |                   |     |        8    |
-(  + o   |+--|---- ( HOT +  ) ---|-----|-+3          |
+-  + o   |+--|---- ( HOT +  ) ---|-----|-+3          |
  |       |   |                   |     |        7    |
  =========   ---------------------     |  2          |
                                        |        6    |
@@ -43,7 +43,7 @@ Fohhn-Net                              D-Sub female
 
 
 
-### Moxa Nport 5130 configuration
+#### Moxa Nport 5130 configuration
 ```
    ## serial settings Port 1
    BAUDRATE     19200
