@@ -13,6 +13,7 @@ Each RS-485 based Fohhn-Net need an external ethernet adapter. The following ada
 
 Some devices with integrated network interface can communicate directly via UDP. However, a few devices only use their interface for audio and can not be used for queries.
 
+Currently only the first six IDs (1-6) are scraped. The result will contain all values from responding devices.   
 Fohhn Text Protocol is not implemented yet.
 
 #### Default Ports
@@ -90,15 +91,17 @@ Flags:
       --fnet.port.tcp=4001  TCP Port for target devices     
 ```
 
-#### Example
+#### Examples
 ```sh
 ./fohhnnet_exporter
-
+./fohhnnet_exporter --log.level Info
 ./fohhnnet_exporter --fnet.port.udp 4021 --log.level Info
+./fohhnnet_exporter --fnet.port.udp 4021 --fnet.port.tcp 4005 --log.level Info
 ```
-Visit http://localhost:2121/fohhnnetudp?target=terminalserver.localnetwork where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
+Visit the following urls,where terminalserver.localnetwork is the IP or DNS-Name of the your Terminalserver to get metrics from.
 
-
+* http://localhost:2121/fohhnnetudp?target=terminalserver.localnetwork (for UDP-Requests)
+* http://localhost:2121/fohhnnettcp?target=terminalserver.localnetwork (for TCP-Requests)
 
 
 
