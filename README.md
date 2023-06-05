@@ -24,7 +24,28 @@ TCP  |   4001
 
 ## Moxa 5130 Setup
 
-#### Adapter Pinout for Moxa 5130 device server
+#### Adapter Pinout for Moxa 5130 device server on RJ-45
+
+```
+
+Fohhn-Net                              D-Sub female  
+
+ ========                              |====== 
+       1-|                             |       ======
+       2-|                       ------|-+5          |
+       3-|                       |     |        9    | 
+       4-|+------- ( COLD - ) ---|-----|-+4          |
+       5-|                       |     |        8    |
+       6-|+------- ( HOT +  ) ---|-----|-+3          |
+       7-|                       |     |        7    |
+       8-|                       |     |  2          |
+=Shield==                        |     |        6    |
+       +_________________________|     |  1          |
+                                       |       ====== 
+                                       | ======
+```
+
+#### Adapter Pinout for Moxa 5130 device server on Screw Connector
 
 ```
 
@@ -44,7 +65,6 @@ Fohhn-Net                              D-Sub female
                                        |       ====== 
                                        | =======
 ```
-
 
 
 #### Moxa Nport 5130 configuration
