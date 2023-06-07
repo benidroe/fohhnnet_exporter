@@ -207,6 +207,10 @@ func GetControls(fohhnNetSession *fohhnNetSession, deviceId int8) (bool, bool, b
 				// Und die eingelesene Bitfolge als signed word behandeln und durch 10 teilen
 				temperature := float32(int16(u))
 
+				if msg[0] == 0xFF {
+					continue
+				}
+
 				// Bit 0,1,2,3 steht jeweils für den Protect des Kanals. Diesen mit einem Bitshift und AND ermitteln
 				protect1 := msg[0]&(1<<0) == 0
 				protect2 := msg[0]&(1<<1) == 0
